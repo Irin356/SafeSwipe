@@ -1,0 +1,59 @@
+{
+  "models": {
+    "logistic_regression": {
+      "accuracy": 94.8,
+      "precision": 97.48,
+      "recall": 91.98,
+      "f1": 94.65,
+      "confusion_matrix": [
+        [
+          11704,
+          285
+        ],
+        [
+          962,
+          11027
+        ]
+      ]
+    },
+    "decision_tree": {
+      "accuracy": 98.76,
+      "precision": 98.95,
+      "recall": 98.57,
+      "f1": 98.76,
+      "confusion_matrix": [
+        [
+          11863,
+          126
+        ],
+        [
+          171,
+          11818
+        ]
+      ]
+    },
+    "random_forest": {
+      "accuracy": 99.95,
+      "precision": 99.93,
+      "recall": 99.96,
+      "f1": 99.95,
+      "confusion_matrix": [
+        [
+          11981,
+          8
+        ],
+        [
+          5,
+          11984
+        ]
+      ]
+    }
+  },
+  "class_distribution_before_smote": {
+    "0": 59943,
+    "1": 473
+  },
+  "training_samples": 95908,
+  "test_samples": 23978,
+  "trained_at": "2026-03-26T11:35:56.136751"
+}
