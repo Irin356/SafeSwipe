@@ -3,6 +3,7 @@ SafeSwipe - Flask Backend
 Run: python app.py
 """
 
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
@@ -74,7 +75,8 @@ def init_db():
             length_valid BOOLEAN,
             digit_count INTEGER,
             checked_at TEXT,
-            username TEXT
+            admin_id INTEGER,
+            FOREIGN KEY(admin_id) REFERENCES admins(id)
         )
     """)
     conn.commit()
@@ -100,14 +102,27 @@ def _create_admin(username, password_hash):
     conn.commit()
     conn.close()
 
-
-def _record_card_check(card_masked, network, valid, luhn, length_valid, digit_count, username):
+def _get_admin_id(username):
     conn = get_db_conn()
     c = conn.cursor()
+    c.execute("SELECT id FROM admins WHERE username = ?", (username,))
+    row = c.fetchone()
+    conn.close()
+    return row["id"] if row else None
+
+def _record_card_check(card_masked, network, valid, luhn, length_valid, digit_count, username):
+    admin_id = _get_admin_id(username)   
+
+    conn = get_db_conn()
+    c = conn.cursor()
+
     c.execute(
-        "INSERT INTO card_checks(card_masked, network, valid, luhn_check, length_valid, digit_count, checked_at, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        (card_masked, network, int(valid), int(luhn), int(length_valid), digit_count, datetime.now().isoformat(), username)
+        """INSERT INTO card_checks
+        (card_masked, network, valid, luhn_check, length_valid, digit_count, checked_at, admin_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+        (card_masked, network, int(valid), int(luhn), int(length_valid), digit_count, datetime.now().isoformat(), admin_id)
     )
+
     conn.commit()
     conn.close()
 
@@ -569,7 +584,9 @@ def validate_card():
     elif card.startswith("6011"):
         network = "Discover"
     card_masked = card[:6] + '*' * max(0, len(card) - 10) + card[-4:] if len(card) >= 10 else '*****'
-    username = admin_sessions.get(request.headers.get("Authorization", "").split(" ", 1)[-1], "unknown")
+    auth = request.headers.get("Authorization", "")
+    token = auth.split(" ", 1)[1] if " " in auth else ""
+    username = admin_sessions.get(token, "unknown")
 
     _record_card_check(
         card_masked=card_masked,
@@ -594,7 +611,16 @@ def validate_card():
 def card_history():
     conn = get_db_conn()
     c = conn.cursor()
-    c.execute("SELECT id, card_masked, network, valid, luhn_check, length_valid, digit_count, checked_at, username FROM card_checks ORDER BY checked_at DESC LIMIT 200")
+    c.execute("""
+SELECT 
+    cc.id, cc.card_masked, cc.network, cc.valid,
+    cc.luhn_check, cc.length_valid, cc.digit_count,
+    cc.checked_at, a.username
+FROM card_checks cc
+JOIN admins a ON cc.admin_id = a.id
+ORDER BY cc.checked_at DESC
+LIMIT 200
+""")
     rows = [dict(r) for r in c.fetchall()]
     conn.close()
     return jsonify({"count": len(rows), "history": rows})
