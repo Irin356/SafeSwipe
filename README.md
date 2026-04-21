@@ -1,143 +1,184 @@
-# SafeSwipe: Enterprise-Grade Fraud Detection Platform
+# SafeSwipe: AI-Powered Fraud Detection Platform
 
-SafeSwipe is a production-ready fraud detection application that leverages advanced machine learning algorithms to identify and prevent fraudulent financial transactions in real-time. Built with scalability and reliability in mind, this full-stack solution combines robust backend APIs with an intuitive React-based frontend to deliver actionable insights for financial institutions.
+SafeSwipe is a full-stack fraud detection platform that uses machine learning to identify suspicious financial transactions in real time. It combines a Flask backend, a React frontend, and trained classification models to help detect fraud, validate cards, and monitor performance through an interactive dashboard.
 
 ## Key Features
 
-- **Advanced ML Models**: Ensemble of Logistic Regression, Decision Tree, and Random Forest classifiers with SMOTE oversampling for imbalanced datasets
-- **Real-time Fraud Detection**: RESTful API endpoints for instant transaction analysis and risk scoring
-- **Secure Card Validation**: Luhn algorithm implementation with additional security checks
-- **Interactive Dashboard**: Real-time monitoring of model performance metrics and system health
-- **Data Pipeline**: Secure CSV upload with automated preprocessing and feature engineering
-- **Admin Portal**: Role-based authentication with session management and audit logging
-- **Scalable Architecture**: Modular Flask backend with SQLite database and joblib model persistence
+- **Real-Time Fraud Detection**: Predicts whether a transaction is fraudulent using trained ML models.
+- **Multiple Classification Models**: Supports Logistic Regression, Decision Tree, and Random Forest classifiers.
+- **Imbalanced Data Handling**: Uses SMOTE oversampling to improve fraud class detection.
+- **Secure Card Validation**: Includes Luhn algorithm-based card number validation.
+- **CSV Data Upload**: Allows admins to upload transaction datasets for preprocessing and analysis.
+- **Interactive Dashboard**: Displays model metrics and system status in a user-friendly interface.
+- **Admin Authentication**: Supports secure admin login and session-based access control.
+- **Scalable Architecture**: Built with a modular Flask backend and React frontend.
+
+## Screenshots
+
+## Landing Page
+<img width="1536" height="955" alt="Landing Page" src="https://github.com/user-attachments/assets/adf48966-8af3-47c0-bea7-2abc80b1f176" />
+
+## Login Page
+<img width="809" height="936" alt="Login Page" src="https://github.com/user-attachments/assets/ad54e07d-3093-479f-a891-1567bb4212ed" />
+
+## Register Page
+<img width="1032" height="938" alt="Register Page" src="https://github.com/user-attachments/assets/47fff190-2323-4c63-a03a-d80c4b12e2ef" />
+
+## Analytics Dashboard
+<img width="1510" height="955" alt="Analytics Dashboard" src="https://github.com/user-attachments/assets/c3cd8301-d127-4071-9ec6-2a225eda3214" />
+
+## Fraud Detection Page
+<img width="1733" height="969" alt="Fraud Detection Page" src="https://github.com/user-attachments/assets/36a6daab-77be-4041-b2fb-667fc6729fec" />
+
 
 ## Technology Stack
 
-### Backend Architecture
-- **Flask 2.x**: Lightweight WSGI web framework for REST API development
-- **Scikit-learn 1.3+**: Comprehensive machine learning library for model training and evaluation
-- **SQLite**: Embedded database for transaction storage and admin session management
-- **SMOTE**: Synthetic Minority Oversampling Technique for handling class imbalance
-- **Joblib**: Efficient model serialization for production deployment
-- **Werkzeug**: Security utilities for password hashing and session management
+### Backend
+- Flask
+- Scikit-learn
+- SQLite
+- SMOTE
+- Joblib
+- Werkzeug
 
-### Frontend Architecture
-- **React 18**: Component-based UI framework with hooks for state management
-- **Tailwind CSS 3.x**: Utility-first CSS framework for responsive design
-- **Axios**: Promise-based HTTP client for API communication
-- **React Router 6**: Declarative routing for single-page application navigation
+### Frontend
+- React 18
+- Tailwind CSS
+- Axios
+- React Router
 
-##  Prerequisites
+### Tools and Libraries
+- Python 3.8+
+- Node.js
+- npm
+- Git
+
+## Datasets Used
+
+SafeSwipe was built using Kaggle credit card fraud datasets for training and evaluation
+
+- **Credit Card Fraud Detection** — 284,807 rows, features V1 to V28.
+- **Credit Card Fraud Detection Dataset 2023** — 550,000 rows.
+
+These datasets helped in training and evaluating fraud detection models under imbalanced-class conditions.
+
+## Installation and Setup
+
+### Prerequisites
 
 - Python 3.8 or higher
-- Node.js 16.x or higher
-- npm 8.x or higher
-- Git for version control
+- Node.js 16 or higher
+- npm
+- Git
 
-##  Installation & Setup
+### Backend Setup
 
-### Backend Configuration
+```bash
+git clone <repository-url>
+cd SafeSwipe/backend
+python -m venv venv
 
-1. **Clone and navigate to backend directory:**
-   ```bash
-   git clone <repository-url>
-   cd SafeSwipe/backend
-2. Create isolated Python environment:
-    python -m venv venv
-    python -m venv venv
-    # Windows
-    venv\Scripts\activate
-    # macOS/Linux
-    source venv/bin/activate
+# Windows
+venv\Scripts\activate
 
-3. Install Python dependencies:
-   pip install -r requirements.txt
+# macOS/Linux
+source venv/bin/activate
 
-4. Initialize database and start Flask server:
-   python app.py
-   
-Server will be available at http://localhost:5000
-   
-### Frontend Configuration
-Navigate to frontend directory:
+pip install -r requirements.txt
+python app.py
+```
+
+The backend will run at:
+
+```bash
+http://localhost:5000/
+```
+
+### Frontend Setup
+
+```bash
 cd ../frontend
-
-Install Node.js dependencies:
 npm install
+npm run dev
+```
 
-Start development server:
-npm start
+The frontend will run at:
 
-Application will be accessible at http://localhost:3000
+```bash
+http://localhost:3000/
+```
 
-### Usage Guide
+## Usage
 
-Access Application: Navigate to http://localhost:3000 in your web browser
-Data Ingestion: Use the Upload page to import transaction datasets in CSV format
-Model Training: Access the Models page to train and evaluate ML algorithms
-Fraud Analysis: Submit transactions via the Fraud Detection page for real-time analysis
-Performance Monitoring: Review model metrics and system status on the Dashboard
-Administration: Authenticate via Admin portal for system management and configuration
+1. Open the frontend in your browser.
+2. Upload a transaction dataset in CSV format.
+3. Train or evaluate the fraud detection models.
+4. Submit transaction details to get a fraud prediction.
+5. View performance metrics on the dashboard.
+6. Use the admin portal for secure authentication and system management.
 
-### API Reference
+## API Endpoints
 
-Endpoint	Method	Description	Request Body
-/health	GET	System status and model training state	-
-/upload	POST	CSV file upload for transaction data	multipart/form-data
-/train	POST	Initiate ML model training pipeline	{"model_type": "rf"}
-/predict	POST	Fraud prediction for transaction	{"features": [...], "model": "rf"}
-/validate-card	POST	Credit card validation	{"card_number": "4111111111111111"}
-/admin-login	POST	Admin authentication	{"username": "...", "password": "..."}
-/admin-check	GET	Session validation	Authorization header
+| Endpoint | Method | Description |
+|---|---|---|
+| `/health` | GET | Checks system status and model training state |
+| `/upload` | POST | Uploads CSV file for transaction data |
+| `/train` | POST | Starts the ML training pipeline |
+| `/predict` | POST | Predicts fraud for a transaction |
+| `/validate-card` | POST | Validates a credit card number |
+| `/admin-login` | POST | Authenticates admin user |
+| `/admin-check` | GET | Validates admin session |
 
 ## Project Structure
 
 ```text
 SafeSwipe/
 ├── backend/
-│   ├── app.py                 # Main Flask application with API routes
-│   ├── requirements.txt       # Python dependency manifest
-│   ├── instance/              # Runtime data (database, models)
-│   └── models/                # Sample datasets and evaluation metrics
+│   ├── app.py
+│   ├── requirements.txt
+│   ├── instance/
+│   └── models/
 ├── frontend/
 │   ├── public/
-│   │   └── index.html         # HTML template
 │   ├── src/
-│   │   ├── components/        # Reusable UI components
-│   │   ├── pages/             # Route-based page components
-│   │   ├── App.js             # Root React component
-│   │   ├── theme.js           # Configuration and constants
-│   │   └── index.js           # Application entry point
-│   ├── package.json           # Node.js dependency manifest
-│   └── tailwind.config.js     # CSS framework configuration
-├── .gitignore                 # Version control exclusions
-├── LICENSE                    # MIT License terms
-└── README.md                  # Project documentation
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── App.js
+│   │   ├── theme.js
+│   │   └── index.js
+│   ├── package.json
+│   └── tailwind.config.js
+├── .gitignore
+├── LICENSE
+└── README.md
+```
 
-### Model Performance
+## Model Performance
 
-The system supports multiple classification algorithms with comprehensive evaluation metrics:
+SafeSwipe evaluates multiple classification models using standard fraud detection metrics:
 
-Accuracy: Overall prediction correctness
-Precision: True positive rate among predicted positives
-Recall: True positive rate among actual positives
-F1-Score: Harmonic mean of precision and recall
-Confusion Matrix: Detailed classification breakdown
+- Best Model: Random Forest
 
-### Contributing
+- Accuracy: 98.12%
 
-We welcome contributions that enhance the platform's fraud detection capabilities and user experience.
+- Precision: 96.44%
 
-### Fork the repository
-Create a feature branch: git checkout -b feature/enhanced-model-accuracy
-Implement changes with comprehensive test coverage
-Commit with descriptive messages: git commit -m 'Add gradient boosting model support'
-Push to branch: git push origin feature/enhanced-model-accuracy
-Submit a pull request with detailed description
+- Recall: 95.73%
 
-### License
-This project is licensed under the MIT License
+- F1-Score: 96.08%
 
+The platform is designed to help compare model performance and identify the best-performing classifier for fraud detection.
 
-  
+## My Role
+
+**Team Lead**
+
+I led the development of SafeSwipe, focusing on the fraud detection workflow, model integration, backend API design, and overall coordination of the project.
+
+## Contributing
+
+Contributions are welcome. If you want to improve the fraud detection pipeline, UI, model performance, or system reliability, feel free to fork the repository and submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.
