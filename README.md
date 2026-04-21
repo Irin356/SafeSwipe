@@ -112,6 +112,7 @@ SafeSwipe/
 │   ├── package.json           # Node.js dependency manifest
 │   └── tailwind.config.js     # CSS framework configuration
 ├── .gitignore                 # Version control exclusions
+├── LICENSE                    # MIT License terms
 └── README.md                  # Project documentation
 
 ### Model Performance
