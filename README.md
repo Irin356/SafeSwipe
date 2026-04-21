@@ -91,8 +91,9 @@ Endpoint	Method	Description	Request Body
 /admin-login	POST	Admin authentication	{"username": "...", "password": "..."}
 /admin-check	GET	Session validation	Authorization header
 
-### Project Architecture
+## Project Structure
 
+```text
 SafeSwipe/
 ├── backend/
 │   ├── app.py                 # Main Flask application with API routes
